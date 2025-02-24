@@ -8,6 +8,7 @@ import java.io.IOException;
 public interface IEmployeeService {
 
     public void generateExcel(HttpServletResponse response) throws IOException;
+    public void generateCsv(HttpServletResponse response)throws IOException;
     public void uploadExcelFile(MultipartFile file)throws IOException;
 
 

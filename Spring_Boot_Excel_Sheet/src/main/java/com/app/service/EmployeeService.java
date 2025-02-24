@@ -71,6 +71,22 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
+    public void generateCsv(HttpServletResponse response) throws IOException {
+        List<Employee> employees=empRepo.findAll();
+        response.getWriter().write("Emp Id,First Name,Last Name,Email,Department,Salary\n");
+        for(Employee emp:employees){
+            response.getWriter().write(emp.getId()+","
+                            +emp.getFirstName()+","
+                            +emp.getLastName()+","
+                            +emp.getEmail()+","
+                            +emp.getDepartment()+","
+                            +emp.getSalary()+"\n"
+            );
+        }
+
+    }
+
+    @Override
     public void uploadExcelFile(MultipartFile file) throws IOException {
         InputStream inputStream  =file.getInputStream();
         Workbook workbook = new HSSFWorkbook(inputStream);

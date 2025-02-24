@@ -20,11 +20,21 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository empRepo;
 
-    @GetMapping("/excel")
-    public void generateExcelSheet(HttpServletResponse response) throws IOException {
-      response.setContentType("application/octet-stream");
-      response.setHeader("Content-Disposition","attachment;filename=employee.xls");
-      empService.generateExcel(response);
+    @GetMapping("/file")
+    public void generateExcelSheet(@RequestParam(value = "format" ,defaultValue ="excel") String format, HttpServletResponse response) throws IOException {
+      if("excel".equalsIgnoreCase(format)){
+          response.setContentType("application/vnd.ms-excel");
+          response.setHeader("Content-Disposition","attachment;filename=employee.xls");
+          empService.generateExcel(response);
+      } else if ("csv".equalsIgnoreCase(format)) {
+          response.setContentType("text/csv");
+          response.setHeader("Content-Disposition", "attachment;filename=employee.csv");
+          empService.generateCsv(response);
+      }else {
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+          response.getWriter().write("Invalid format. Please specify 'excel' or 'csv'.");
+      }
+
     }
 
     @PostMapping("/upload/excel")
